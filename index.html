@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>สูตรอร่อย Wongnok</title>
+  <!-- Font Awesome & Google Font -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- =====================
+       Navbar Section
+  ========================= -->
+  <nav class="navbar">
+    <!-- Logo -->
+    <div class="logo">
+      <i class="fa-solid fa-utensils"></i> สูตรอร่อย Wongnok
+    </div>
+    <!-- Navigation Links -->
+    <ul class="nav-links">
+      <li><a href="#">หน้าหลัก</a></li>
+      <li id="userDisplay" class="hide">
+        <i class="fa-solid fa-user"></i>
+        <span id="usernameShow"></span>
+      </li>
+      <li><button id="loginBtn"  class="btn-outline">เข้าสู่ระบบ</button></li>
+      <li><button id="logoutBtn" class="btn-outline hide">ออกจากระบบ</button></li>
+      <li><button id="addBtn"    class="btn-fill hide">➕ เพิ่มสูตร</button></li>
+    </ul>
+  </nav>
+
+  <!-- =====================
+       Hero & Search Section
+  ========================= -->
+  <section class="hero">
+    <h1>ค้นหาเมนูจานโปรดใหม่ของคุณ</h1>
+    <p>รวมสูตรอาหารไทย–นานาชาติ ให้คุณลองทำที่บ้าน</p>
+
+    <!-- Search Bar -->
+    <div class="search-group">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="ค้นหาชื่อเมนูหรือวัตถุดิบ…">
+      </div>
+      <button id="btnSearch" class="btn-search">
+        <i class="fa-solid fa-magnifying-glass"></i> ค้นหา
+      </button>
+    </div>
+
+    <!-- Filter Options -->
+    <div class="filter-group">
+      <select id="timeFilter">
+        <option value="">เวลาในการทำ</option>
+        <option value="r1">5–10 นาที</option>
+        <option value="r2">11–30 นาที</option>
+        <option value="r3">31–60 นาที</option>
+        <option value="r4">60+ นาที</option>
+      </select>
+      <select id="diffFilter">
+        <option value="">ระดับความยาก</option>
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+      </select>
+      <input id="userFilter" type="text" placeholder="กรองชื่อผู้ใช้…" style="min-width:120px">
+      <select id="ratingFilter">
+        <option value="">เรตติ้ง</option>
+        <option value="5">5 ดาว</option>
+        <option value="4">4 ดาวขึ้นไป</option>
+        <option value="3">3 ดาวขึ้นไป</option>
+        <option value="2">2 ดาวขึ้นไป</option>
+        <option value="1">1 ดาวขึ้นไป</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- =====================
+       Recipes Grid Section
+  ========================= -->
+  <section class="container">
+    <h2 class="section-title">สูตรแนะนำ</h2>
+    <div id="recipeList" class="card-grid"></div>
+  </section>
+
+  <!-- =====================
+       Auth Modal Section
+  ========================= -->
+  <div id="authModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeAuthModal()">&times;</span>
+      <h3>เข้าสู่ระบบ / สมัครสมาชิก</h3>
+      <input id="usernameInput" placeholder="กรอกชื่อผู้ใช้…">
+      <button class="btn-fill w-100" onclick="doLogin()">ยืนยัน</button>
+      <p class="note">* พิมพ์ชื่อใหม่เพื่อสมัครสมาชิกอัตโนมัติ</p>
+    </div>
+  </div>
+
+  <!-- =====================
+       Add/Edit Recipe Modal
+  ========================= -->
+  <div id="recipeModal" class="modal">
+    <div class="modal-content large">
+      <span class="close" onclick="closeRecipeModal()">&times;</span>
+      <h3 id="recipeModalTitle">เพิ่มสูตรอาหาร</h3>
+      <!-- Recipe Name -->
+      <label for="recipeName">ชื่อเมนู</label>
+      <div class="desc">กรุณากรอกชื่อเมนูอาหาร เช่น ผัดกะเพราไข่ดาว</div>
+      <input id="recipeName" placeholder="ชื่อเมนู…">
+      <!-- Recipe Image -->
+      <label for="recipeImg">ลิงก์รูปภาพ (URL)</label>
+      <div class="desc">ใส่ลิงก์รูปภาพเมนู เช่น https://...</div>
+      <input id="recipeImg" placeholder="ลิงก์รูปภาพ (URL) …">
+      <div class="two-col">
+        <div style="flex:1">
+          <!-- Cooking Time -->
+          <label for="recipeTime">เวลาทำ (นาที)</label>
+          <div class="desc">กรอกเป็นตัวเลข เช่น 20</div>
+          <input id="recipeTime" type="number" placeholder="เวลาทำ (นาที)…">
+        </div>
+        <div style="flex:1">
+          <!-- Difficulty -->
+          <label for="recipeDiff">ระดับความยาก</label>
+          <div class="desc">เลือกความยากของเมนู</div>
+          <select id="recipeDiff">
+            <option value="">ระดับความยาก</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </div>
+      </div>
+      <!-- Ingredients -->
+      <label for="recipeIngr">วัตถุดิบ</label>
+      <div class="desc">กรอกวัตถุดิบแต่ละรายการ 1 บรรทัด เช่น หมู/ไก่สับ\nพริก\nกระเทียม</div>
+      <textarea id="recipeIngr" rows="3" placeholder="วัตถุดิบ (แต่ละบรรทัด)"></textarea>
+      <!-- Steps -->
+      <label for="recipeSteps">ขั้นตอนการทำ</label>
+      <div class="desc">กรอกขั้นตอนแต่ละบรรทัด เช่น ผัดพริกกระเทียมกับหมู ใส่น้ำปลา ...</div>
+      <textarea id="recipeSteps" rows="4" placeholder="ขั้นตอนการทำ (แต่ละบรรทัด)"></textarea>
+      <button id="saveRecipeBtn" class="btn-fill w-100">บันทึก</button>
+    </div>
+  </div>
+
+  <!-- =====================
+       Main JS Scripts
+  ========================= -->
+  <script src="app.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

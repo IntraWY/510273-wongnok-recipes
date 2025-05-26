@@ -1,0 +1,309 @@
+/* =====================
+  Global Styles
+====================== */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Kanit',sans-serif;color:#333;background:#f5f7fc}
+img{width:100%;display:block}
+
+/* =====================
+  Form Elements
+====================== */
+input,textarea,select{
+  font-family:inherit;
+  font-size:15px;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:6px;
+}
+.filter-group select{
+  width:auto;
+  min-width:110px;
+}
+.hide{display:none}
+
+/* =====================
+  Navbar
+====================== */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 24px;
+  background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.08);
+  position:sticky;top:0;z-index:10;
+}
+.logo{font-weight:600;font-size:24px;color:#ff6f61}
+.logo i{margin-right:6px}
+.nav-links{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin:0;
+  padding:0;
+}
+.nav-links li{list-style:none}
+.nav-links a{color:#333;text-decoration:none;font-weight:500}
+#userDisplay{font-size:14px;color:#555}
+
+/* =====================
+  Buttons
+====================== */
+.btn-fill,.btn-outline{
+  padding:6px 14px;
+  border-radius:6px;
+  font-size:14px;
+  cursor:pointer;
+  border:2px solid transparent;
+}
+.btn-fill{background:#0d6efd;color:#fff}
+.btn-outline{background:#fff;border-color:#0d6efd;color:#0d6efd}
+.btn-fill:hover{background:#0954c3}
+.btn-outline:hover{background:#0d6efd;color:#fff}
+.w-100{width:100%}
+
+/* =====================
+  Hero Section
+====================== */
+.hero{
+  background:linear-gradient(135deg,#4759fa,#ff9068);
+  padding:50px 20px;
+  text-align:center;
+  color:#fff;
+}
+.hero h1{font-size:32px;font-weight:600;margin-bottom:8px}
+.hero p{font-size:16px;margin-bottom:20px}
+
+/* =====================
+  Search & Filter
+====================== */
+.search-group{
+  display:flex;flex-wrap:wrap;
+  justify-content:center;gap:8px;
+  margin-bottom:16px;
+}
+.search-box{
+  display:flex;align-items:center;
+  background:#fff;
+  padding:8px 12px;
+  border-radius:8px;
+  width:100%;max-width:460px;
+}
+.search-box i{color:#888;margin-right:6px}
+.search-box input{border:none;outline:none;flex-grow:1}
+.btn-search{
+  background:#fff;color:#000000;
+  border:none;padding:8px 16px;
+  border-radius:8px;font-weight:600;
+  cursor:pointer;
+}
+
+/* =====================
+  Filter Group
+====================== */
+.filter-group{display:flex;gap:8px;justify-content:center;margin-bottom:16px}
+
+/* =====================
+  Container & Section Title
+====================== */
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:40px 16px;
+}
+.section-title{
+  text-align:center;
+  font-size:24px;font-weight:600;
+  margin-bottom:24px;
+}
+
+/* =====================
+  Card Grid & Card
+====================== */
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+.card{
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.07);
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+.card img{height:160px;object-fit:cover}
+.owner-badge{
+  position:absolute;top:8px;left:8px;
+  background:#ff6f61;color:#fff;
+  padding:2px 6px;font-size:12px;
+  border-radius:4px;
+}
+.card-body{
+  padding:14px;
+  flex-grow:1;
+  display:flex;flex-direction:column;
+}
+.card-body .ingredients,
+.card-body .steps{
+  font-size:13px;color:#666;
+  overflow:auto;
+  margin-bottom:8px;
+}
+.card-body .rate-btn {
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+/* =====================
+  Rate Button Styles
+====================== */
+.rate-btn{
+  margin-top:8px;
+  margin-right:6px;
+  min-width:80px;
+}
+.rate-btn.btn-fill{
+  background:#0d6efd;color:#fff;border:none;
+}
+.rate-btn.btn-outline{
+  background:#fff;border:2px solid #0d6efd;color:#0d6efd;
+}
+.rate-btn.btn-outline.delete-btn{
+  border-color:#dc3545;
+  color:#dc3545;
+}
+.rate-btn.btn-outline.delete-btn:hover{
+  background:#dc3545;
+  color:#fff;
+}
+.rate-btn.btn-outline.edit-btn{
+  border-color:#ffc107;
+  color:#ffc107;
+}
+.rate-btn.btn-outline.edit-btn:hover{
+  background:#ffc107;
+  color:#fff;
+}
+.rate-btn:hover{opacity:0.9}
+
+/* =====================
+  Modal Styles
+====================== */
+.modal{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.5);
+  z-index:20;overflow:auto;
+}
+.modal-content{
+  background:#fff;
+  margin:60px auto;padding:20px;
+  border-radius:10px;
+  width:90%;max-width:400px;
+  position:relative;
+}
+.modal-content.large{max-width:600px}
+.close{
+  position:absolute;top:12px;right:12px;
+  font-size:24px;cursor:pointer;
+}
+.two-col{display:flex;gap:10px}
+.note{
+  font-size:12px;color:#666;
+  text-align:center;margin-top:8px;
+}
+.modal-content.large label {
+  display: block;
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 2px;
+  margin-top: 10px;
+  font-weight: 500;
+}
+.modal-content.large input,
+.modal-content.large textarea,
+.modal-content.large select {
+  margin-bottom: 8px;
+}
+.modal-content.large .desc {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 6px;
+  margin-top: -4px;
+}
+.fa-star {
+  color: #ffc107 !important;
+}
+.fa-solid{
+  color: #ffc107 !important;
+}
+.fa-user{
+  color: #000000 !important;
+}
+
+/* =====================
+  Responsive Design
+====================== */
+@media (max-width: 900px) {
+  .container {
+    padding: 24px 6px;
+  }
+  .section-title {
+    font-size: 20px;
+  }
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 8px;
+  }
+  .nav-links {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 22px;
+  }
+  .hero p {
+    font-size: 13px;
+  }
+  .container {
+    padding: 12px 2px;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .card img {
+    height: 120px;
+  }
+  .modal-content, .modal-content.large {
+    width: 98vw;
+    max-width: 98vw;
+    padding: 8px 2vw;
+  }
+  .modal-content.large input,
+  .modal-content.large textarea,
+  .modal-content.large select {
+    width: 100%;
+    font-size: 15px;
+  }
+  .two-col {
+    flex-direction: column;
+    gap: 0;
+  }
+  .btn-fill, .btn-outline {
+    width: 100%;
+    margin-bottom: 6px;
+  }
+  .search-group, .filter-group {
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+  }
+}
