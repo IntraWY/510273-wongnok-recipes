@@ -1,18 +1,38 @@
 // -------------------- LocalStorage Helper --------------------
+// สร้าง object LS เพื่อจัดการข้อมูลใน LocalStorage ให้ง่ายขึ้น
+// LocalStorage จะเก็บข้อมูลเป็น string ดังนั้นต้องแปลงเป็น JSON ก่อนเก็บและหลังดึงข้อมูล
 const LS = {
+  // ดึงข้อมูลจาก LocalStorage
+  // k = key ที่ใช้เก็บข้อมูล, def = ค่าเริ่มต้นถ้าไม่มีข้อมูล
   get: (k, def) => JSON.parse(localStorage.getItem(k)) || def,
+  // เก็บข้อมูลลง LocalStorage
+  // k = key ที่ใช้เก็บข้อมูล, v = ค่าที่จะเก็บ
   set: (k, v)   => localStorage.setItem(k, JSON.stringify(v)),
 };
 
 // -------------------- Recipe Model --------------------
+// คลาส Recipe เป็นโครงสร้างข้อมูลของสูตรอาหารแต่ละสูตร
 class Recipe {
+  // constructor รับ parameter เป็น object ที่มี property ต่างๆ ของสูตรอาหาร
+  // id = รหัสสูตร (ใช้ timestamp)
+  // name = ชื่อเมนู
+  // img = URL รูปภาพ
+  // time = เวลาที่ใช้ทำ (นาที)
+  // diff = ระดับความยาก (Easy, Medium, Hard)
+  // ingredients = array ของวัตถุดิบ
+  // steps = array ของขั้นตอนการทำ
+  // owner = ผู้สร้างสูตร
+  // rating = คะแนนเฉลี่ย (เริ่มต้น = 0)
+  // count = จำนวนคนที่ให้คะแนน (เริ่มต้น = 0)
   constructor({id, name, img, time, diff, ingredients, steps, owner, rating=0, count=0}) {
     Object.assign(this, {id, name, img, time, diff, ingredients, steps, owner, rating, count});
   }
 }
 
 // -------------------- Global State --------------------
-let currentUser = null, editTargetId = null;
+// ตัวแปร Global เก็บสถานะปัจจุบันของแอพ
+let currentUser = null;  // ผู้ใช้ที่ login อยู่
+let editTargetId = null; // รหัสสูตรที่กำลังแก้ไข
 
 // -------------------- AUTH --------------------
 // เปิด modal ล็อกอิน
@@ -71,6 +91,11 @@ function renderRecipes() {
   const rf = document.getElementById('ratingFilter') ? document.getElementById('ratingFilter').value : '';
   const list = document.getElementById('recipeList');
   list.innerHTML = '';
+  // เตรียมข้อมูลเมนูที่ user นี้เคยให้คะแนน
+  let ratedIds = [];
+  if (currentUser) {
+    ratedIds = LS.get('ratedByUser_' + currentUser, []);
+  }
   getRecipes()
     // ฟิลเตอร์ชื่อเมนู
     .filter(r => !kw || r.name.toLowerCase().includes(kw))
@@ -101,9 +126,35 @@ function renderRecipes() {
       const imageUrl = r.img && r.img.trim()
         ? r.img
         : `https://source.unsplash.com/600x400/?${encodeURIComponent(r.name)}`;
+      // ตรวจสอบว่า user นี้เคยให้คะแนนเมนูนี้หรือยัง
+      const isRated = currentUser && ratedIds.includes(r.id);
+      let cardClass = 'card';
+      if (isRated) cardClass += ' rated';
+      let buttonGroup = '';
+      if (r.owner === currentUser || currentUser === 'admin') {
+        buttonGroup = `
+          <div class="card-btn-group">
+            <button class="btn-outline rate-btn edit-btn" onclick="openRecipeModal(${r.id})">แก้ไข</button>
+            <button class="btn-outline rate-btn delete-btn" onclick="deleteRecipe(${r.id})">ลบ</button>
+          </div>
+        `;
+      } else if (isRated) {
+        buttonGroup = `
+          <div class="card-btn-group">
+            <button class="btn-fill rate-btn" disabled>ให้คะแนนแล้ว</button>
+          </div>
+        `;
+      } else {
+        buttonGroup = `
+          <div class="card-btn-group">
+            <button class="btn-fill rate-btn" onclick="rateRecipe(${r.id})">ให้คะแนน</button>
+          </div>
+        `;
+      }
       list.innerHTML += `
-<div class="card">
+<div class="${cardClass}">
   ${(r.owner === currentUser || currentUser === 'admin') ? '<span class="owner-badge">ของฉัน</span>' : ''}
+  ${isRated ? '<span class="rated-badge"><i class="fa-solid fa-star"></i> ให้คะแนนแล้ว</span>' : ''}
   <img src="${imageUrl}" alt="${r.name}">
   <div class="card-body">
     <h3>${r.name}</h3>
@@ -115,12 +166,7 @@ function renderRecipes() {
     </ul>
     <div class="ingredients"><strong>วัตถุดิบ:</strong> ${ingreds}</div>
     <div class="steps"><strong>ขั้นตอน:</strong> ${steps}</div>
-    ${
-      (r.owner === currentUser || currentUser === 'admin')
-        ? `<button class="btn-outline rate-btn edit-btn" onclick="openRecipeModal(${r.id})">แก้ไข</button>
-           <button class="btn-outline rate-btn delete-btn" onclick="deleteRecipe(${r.id})">ลบ</button>`
-        : `<button class="btn-fill rate-btn" onclick="rateRecipe(${r.id})">ให้คะแนน</button>`
-    }
+    ${buttonGroup}
   </div>
 </div>`;
     });

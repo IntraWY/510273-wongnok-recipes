@@ -1,4 +1,55 @@
 /* =====================
+  Card Button Group
+====================== */
+
+.card-btn-group {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: center;
+}
+
+.card-btn-group > button {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 180px;
+}
+
+@media (max-width: 600px) {
+  .card-btn-group {
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+    align-items: stretch;
+  }
+  .card-btn-group > button {
+    max-width: 100%;
+  }
+}
+/* =====================
+  Rated Card Styles
+====================== */
+.card.rated {
+  border: 2px solid #ffd700;
+  background: #fffbe6;
+  position: relative;
+}
+.rated-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ffd700;
+  color: #333;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.95em;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+}
+/* =====================
   Global Styles
 ====================== */
 *{box-sizing:border-box;margin:0;padding:0}
@@ -145,7 +196,18 @@ input,textarea,select{
 .card-body{
   padding:14px;
   flex-grow:1;
-  display:flex;flex-direction:column;
+  display:flex;
+  flex-direction:column;
+}
+
+.card-btn-group {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: center;
+  margin-bottom: 0;
+  margin-top: auto;
 }
 .card-body .ingredients,
 .card-body .steps{
